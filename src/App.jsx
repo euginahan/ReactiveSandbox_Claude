@@ -21,7 +21,14 @@ function App() {
   const [selectedIngredients, setSelectedIngredients] = useState([])
 
   // ── Week Plan state ───────────────────────────────────────────
-  const [weekPlan,         setWeekPlan]         = useState(null)
+  const [weekPlan,         setWeekPlan]         = useState(() => {
+    const plan = {}
+    DAYS.forEach(({ key }) => {
+      plan[key] = {}
+      MEAL_TYPES.forEach(({ key: mk }) => { plan[key][mk] = { ingredients: [] } })
+    })
+    return plan
+  })
   const [selectedWeekMeal, setSelectedWeekMeal] = useState(null)  // { day, mealType } | null
   const [isGeneratingWeek, setIsGeneratingWeek] = useState(false)
 
@@ -150,7 +157,9 @@ function App() {
   }
 
   function handleSelectWeekMeal(day, mealType) {
-    setSelectedWeekMeal({ day, mealType })
+    setSelectedWeekMeal((prev) =>
+      prev?.day === day && prev?.mealType === mealType ? null : { day, mealType }
+    )
   }
 
   function handleAddToWeekMeal(ingredientId) {

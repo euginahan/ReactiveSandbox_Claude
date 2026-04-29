@@ -52,7 +52,6 @@ function MealCard({ meal, mealType, isSelected, ingredientLookup, onClick }) {
     <button
       className={`meal-card ${isSelected ? 'selected' : ''} ${isEmpty ? 'empty' : ''}`}
       onClick={onClick}
-      disabled={isEmpty}
     >
       <div className="meal-card-type">
         <span className="meal-card-emoji">{emoji}</span>
@@ -116,7 +115,9 @@ function DayColumn({ dayMeta, dayPlan, selectedWeekMeal, ingredientLookup, onSel
 }
 
 function WeekGrid({ weekPlan, selectedWeekMeal, ingredientLookup, onSelectMeal, onGenerateWeekPlan, isGenerating }) {
-  const hasWeekPlan = weekPlan !== null
+  const hasAnyMeals = DAYS.some(({ key }) =>
+    MEAL_TYPES.some(({ key: mk }) => weekPlan?.[key]?.[mk]?.ingredients?.length > 0)
+  )
 
   return (
     <div className="panel week-grid-panel">
@@ -124,7 +125,7 @@ function WeekGrid({ weekPlan, selectedWeekMeal, ingredientLookup, onSelectMeal, 
         <div>
           <div className="panel-title">Week Plan</div>
           <div className="panel-subtitle">
-            {hasWeekPlan ? 'Click a meal card to see the full recipe' : 'Generate a week to get started'}
+            {hasAnyMeals ? 'Click a meal card to edit it' : 'Click any slot to add ingredients, or generate a full week'}
           </div>
         </div>
         <button
@@ -134,34 +135,26 @@ function WeekGrid({ weekPlan, selectedWeekMeal, ingredientLookup, onSelectMeal, 
         >
           {isGenerating
             ? <><div className="spinner" /> Generating…</>
-            : <><span>✨</span> {hasWeekPlan ? 'Regenerate' : 'Generate Week Plan'}</>
+            : <><span>✨</span> {hasAnyMeals ? 'Regenerate' : 'Generate Week Plan'}</>
           }
         </button>
       </div>
 
       <div className="week-grid-body">
-        {hasWeekPlan ? (
-          <div className="day-columns-scroll">
-            <div className="day-columns">
-              {DAYS.map((dayMeta) => (
-                <DayColumn
-                  key={dayMeta.key}
-                  dayMeta={dayMeta}
-                  dayPlan={weekPlan[dayMeta.key]}
-                  selectedWeekMeal={selectedWeekMeal}
-                  ingredientLookup={ingredientLookup}
-                  onSelectMeal={onSelectMeal}
-                />
-              ))}
-            </div>
+        <div className="day-columns-scroll">
+          <div className="day-columns">
+            {DAYS.map((dayMeta) => (
+              <DayColumn
+                key={dayMeta.key}
+                dayMeta={dayMeta}
+                dayPlan={weekPlan[dayMeta.key]}
+                selectedWeekMeal={selectedWeekMeal}
+                ingredientLookup={ingredientLookup}
+                onSelectMeal={onSelectMeal}
+              />
+            ))}
           </div>
-        ) : (
-          <div className="week-empty-state">
-            <div className="week-empty-icon">📅</div>
-            <p>Your week is empty.</p>
-            <p className="week-empty-sub">Click <strong>Generate Week Plan</strong> to auto-fill 7 days of balanced meals.</p>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   )
