@@ -460,22 +460,20 @@ flowchart TD
 
 ## Five Questions Reflection
 
-*To be completed before final submission.*
-
 **1. Can I defend this?**
-*Can I explain every major decision — especially the state architecture?*
+I can defend this project and clearly explain the decisions behind it, especially how the shared state powers the three panels in a meal planning and macro tracking system where selecting ingredients, adjusting quantities, and generating meals all update in real time.
 
 **2. Is this mine?**
-*Does this reflect my creative direction, or did I mostly follow AI's direction?*
+The concept feels like mine because I started with the idea of making something that helps users not just track macros but actually understand and build meals, and I used AI to help execute that vision rather than define it.
 
 **3. Did I verify?**
-*Do the three panels actually share state, or are they faking it?*
+I verified that everything is truly connected — when I interact with the ingredient library or weekly planner, it updates the meal builder and macro output through real shared state, not just visual changes.
 
 **4. Would I teach this?**
-*Could I explain the props-down/events-up pattern to a classmate?*
+I understand the system well enough to explain how data flows between components and how interactions trigger updates across the app.
 
 **5. Is my documentation honest?**
-*Does my AI Direction Log accurately describe what I asked and what I changed?*
+My documentation is honest and reflects what I asked AI to do, where I made changes, and how I refined the experience to better match my original idea.
 
 ---
 
